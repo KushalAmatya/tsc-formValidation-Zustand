@@ -7,6 +7,8 @@ import MailForm from "./MailForm";
 type FormValues = {
   name: string;
   age: string;
+  email: string;
+  password: string;
 };
 
 const schema = z.object({
@@ -17,30 +19,48 @@ const schema = z.object({
     .regex(/^\d+$/, { message: "Age must be a number" }),
 });
 
+const defaultValues = {
+  name: "",
+  age: "",
+  email: "",
+  password: "",
+};
+
 export const Form = () => {
   const [pageCount, setPageCount] = useState(0);
   const [formdata, setFormData] = useState<FormValues | null>(null);
+  const [prevdata, setPrevData] = useState<FormValues | null>(null);
+
   const {
     register,
     handleSubmit,
     trigger,
     formState: { errors },
+    reset, // <-- Import reset from useForm
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: prevdata || defaultValues,
   });
 
   const onSubmit = async (data: FormValues) => {
     const isValid = await trigger();
     if (!isValid) return;
     setFormData(data);
+    setPrevData(data);
+    console.log(prevdata);
+
     setPageCount(pageCount + 1);
   };
 
   useEffect(() => {
+    if (prevdata) {
+      console.log("Prev Data updated:", prevdata);
+      reset(prevdata); // <-- Reset the form with prevdata when it updates
+    }
     if (formdata) {
       console.log("Form Data updated:", formdata);
     }
-  }, [formdata]);
+  }, [formdata, prevdata, reset]); // <-- Include reset in dependency array
 
   return (
     <div>
@@ -65,7 +85,15 @@ export const Form = () => {
             </button>
           </div>
         )}
-        {pageCount === 1 && <MailForm pageCount={pageCount} formdata={formdata}/>}
+        {pageCount === 1 && (
+          <MailForm
+            pageCount={pageCount}
+            formdata={formdata}
+            prevdata={prevdata}
+            setPrevData={setPrevData}
+            setPageCount={setPageCount} // Assuming this is passed down for "prev" button
+          />
+        )}
       </form>
     </div>
   );
