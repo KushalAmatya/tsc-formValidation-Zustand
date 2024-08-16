@@ -36,7 +36,7 @@ export const Form = () => {
     handleSubmit,
     trigger,
     formState: { errors },
-    reset, // <-- Import reset from useForm
+    reset, 
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: prevdata || defaultValues,
@@ -47,32 +47,32 @@ export const Form = () => {
     if (!isValid) return;
     setFormData(data);
     setPrevData(data);
-    console.log(prevdata);
+    // console.log(prevdata);
 
     setPageCount(pageCount + 1);
   };
 
   useEffect(() => {
     if (prevdata) {
-      console.log("Prev Data updated:", prevdata);
-      reset(prevdata); // <-- Reset the form with prevdata when it updates
+      // console.log("Prev Data updated:", prevdata);
+      reset(prevdata); 
     }
     if (formdata) {
-      console.log("Form Data updated:", formdata);
+      // console.log("Form Data updated:", formdata);
     }
-  }, [formdata, prevdata, reset]); // <-- Include reset in dependency array
+  }, [formdata, prevdata, reset]); 
 
   return (
     <div>
-      <form className="">
+      <form className="text-xl min-h-52">
         {pageCount === 0 && (
-          <div className="bg-slate-400 flex-col flex max-w-md mx-auto border-solid border-black border p-4">
-            <label htmlFor="">Enter Name</label>
+          <div className="bg-slate-400 flex-col flex max-w-md mx-auto border-solid font-bold border-black border p-4">
+            <label htmlFor="">Enter Name:</label>
             <input type="text" {...register("name")} />
 
             <p className="text-red-600">{errors.name?.message}</p>
 
-            <label htmlFor="">Enter Age</label>
+            <label htmlFor="">Enter Age:</label>
             <input type="text" {...register("age")} />
             <p className="text-red-600">{errors.age?.message}</p>
 
@@ -91,7 +91,7 @@ export const Form = () => {
             formdata={formdata}
             prevdata={prevdata}
             setPrevData={setPrevData}
-            setPageCount={setPageCount} // Assuming this is passed down for "prev" button
+            setPageCount={setPageCount} 
           />
         )}
       </form>

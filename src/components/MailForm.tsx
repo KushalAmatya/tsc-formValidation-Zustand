@@ -43,7 +43,7 @@ export default function MailForm({ pageCount, formdata, prevdata, setPrevData, s
         }
     setData(combinedData);
     setPrevData(combinedData); 
-    console.log(combinedData);
+    // console.log(combinedData);
     navigate("/list");
     
   };
@@ -53,8 +53,8 @@ export default function MailForm({ pageCount, formdata, prevdata, setPrevData, s
   };
 
   return (
-    <div>
-      <div className="flex-col flex max-w-md mx-auto border-solid border-black border p-4">
+    <div className="">
+      <div className="flex-col flex max-w-md mx-auto border-solid border-black border p-4 bg-slate-400">
         <label htmlFor="">Enter Email</label>
         <input type="email" {...register("email")} />
         {errors.email && <p className="text-red-600">{errors.email.message}</p>}
